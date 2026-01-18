@@ -151,8 +151,33 @@ class ErrorRecoveryManager:
     def _handle_socket_timeout(self, error_info: ErrorInfo) -> bool:
         """处理socket超时"""
         current_time = time.time()
+        
+        # 尝试从上下文中获取socket并增加超时时间
+        socket_obj = error_info.context.get('socket')
+        if socket_obj:
+            try:
+                # 局部导入以避免循环依赖
+                try:
+                    from stability_optimizer import stability_optimizer
+                except ImportError:
+                    # Fallback for when running as a package or different path structure
+                    import sys
+                    import os
+                    if os.path.dirname(__file__) not in sys.path:
+                        sys.path.append(os.path.dirname(__file__))
+                    from stability_optimizer import stability_optimizer
+                
+                # 使用 'data_transfer' 类型以获得标准超时时间 * 倍数
+                new_timeout = stability_optimizer.optimize_socket_timeout(socket_obj, "data_transfer")
+                
+                if self._should_log(error_info.error_type, current_time):
+                    self.logger.info(f"处理socket超时 - 已增加超时时间至 {new_timeout:.2f}s")
+                return True
+            except Exception as e:
+                self.logger.error(f"调整socket超时失败: {e}")
+        
         if self._should_log(error_info.error_type, current_time):
-            self.logger.info("处理socket超时 - 增加超时时间")
+            self.logger.info("处理socket超时 - 增加超时时间 (未找到socket对象)")
         # 这里可以通知相关组件增加超时时间
         return True
     

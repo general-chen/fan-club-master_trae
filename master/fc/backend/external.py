@@ -366,7 +366,16 @@ class ExternalControl(pt.PrintClient):
         sock.settimeout(None)
         if broadcast:
             sock.setsockopt(sk.SOL_SOCKET, sk.SO_BROADCAST, 1)
-        sock.bind(("", port))
+
+        # Use the configured default IP address if available, otherwise bind to all interfaces
+        bind_ip = ""
+        try:
+            if self.archive and ac.defaultIPAddress in self.archive:
+                bind_ip = self.archive[ac.defaultIPAddress]
+        except:
+            pass
+
+        sock.bind((bind_ip, port))
         self.prints("Opened {} socket on {}".format(name, sock.getsockname()))
         return sock
 

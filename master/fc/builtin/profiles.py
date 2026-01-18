@@ -256,7 +256,8 @@ DEV1 = {
     ac.description : "A provisional profile to be used for development.",
     ac.platform : ac.UNKNOWN,
 
-    ac.broadcastIP : "10.42.0.255",
+    ac.broadcastIP : "192.168.0.255",
+    ac.defaultIPAddress : "192.168.0.10",
     ac.broadcastPort  : 65000,
     ac.broadcastPeriodMS : 1000,
     ac.periodMS : 100,
@@ -9009,6 +9010,7 @@ ARRAY_21X21 = {
 
     # Network Configuration - Optimized for large scale array
     ac.broadcastIP : "192.168.0.255",
+    ac.defaultIPAddress : "192.168.0.10",
     ac.broadcastPort  : 65000,
     ac.broadcastPeriodMS : 1000,
     ac.periodMS : 50,  # Faster response for large array
@@ -9026,7 +9028,7 @@ ARRAY_21X21 = {
     ac.socketLimit : 2048,  # Higher connection limit
 
     # IP configuration
-    ac.defaultIPAddress : ac.DEFAULT_IP_ADDRESS,
+    # ac.defaultIPAddress : ac.DEFAULT_IP_ADDRESS,
     ac.defaultBroadcastIP : ac.DEFAULT_BROADCAST_IP,
 
     # Default Slave Configuration
@@ -9061,7 +9063,7 @@ ARRAY_21X21 = {
         # Row 0 (Fans 0-20)
         {
             ac.SV_name : "Row_00",
-            ac.SV_mac : "00:80:e1:46:00:38",
+            ac.SV_mac : "00:80:e1:40:00:26",
             ac.SV_index : -1,
             ac.SV_fanModel : "HighPerformance",
             ac.SV_fanMode : ac.SINGLE,
@@ -9087,7 +9089,7 @@ ARRAY_21X21 = {
         # Row 1 (Fans 21-41)
         {
             ac.SV_name : "Row_01",
-            ac.SV_mac : "00:80:e1:49:00:22",
+            ac.SV_mac : "00:80:e1:37:00:23",
             ac.SV_index : -1,
             ac.SV_fanModel : "HighPerformance",
             ac.SV_fanMode : ac.SINGLE,
@@ -9113,7 +9115,7 @@ ARRAY_21X21 = {
         # Row 2 (Fans 42-62)
         {
             ac.SV_name : "Row_02",
-            ac.SV_mac : "00:80:e1:25:00:44",
+            ac.SV_mac : "00:80:e1:34:00:18",
             ac.SV_index : -1,
             ac.SV_fanModel : "HighPerformance",
             ac.SV_fanMode : ac.SINGLE,
@@ -9139,7 +9141,7 @@ ARRAY_21X21 = {
         # Row 3 (Fans 63-83)
         {
             ac.SV_name : "Row_03",
-            ac.SV_mac : "00:80:e1:27:00:29",
+            ac.SV_mac : "00:80:e1:3d:00:18",
             ac.SV_index : -1,
             ac.SV_fanModel : "HighPerformance",
             ac.SV_fanMode : ac.SINGLE,
@@ -9165,7 +9167,7 @@ ARRAY_21X21 = {
         # Row 4 (Fans 84-104)
         {
             ac.SV_name : "Row_04",
-            ac.SV_mac : "None",
+            ac.SV_mac : "00:80:e1:2d:00:1e",
             ac.SV_index : -1,
             ac.SV_fanModel : "HighPerformance",
             ac.SV_fanMode : ac.SINGLE,
@@ -9191,7 +9193,7 @@ ARRAY_21X21 = {
         # Row 5 (Fans 105-125)
         {
             ac.SV_name : "Row_05",
-            ac.SV_mac : "None",
+            ac.SV_mac : "00:80:e1:52:00:36",
             ac.SV_index : -1,
             ac.SV_fanModel : "HighPerformance",
             ac.SV_fanMode : ac.SINGLE,
@@ -9217,7 +9219,7 @@ ARRAY_21X21 = {
         # Row 6 (Fans 126-146)
         {
             ac.SV_name : "Row_06",
-            ac.SV_mac : "None",
+            ac.SV_mac : "00:80:e1:53:00:30",
             ac.SV_index : -1,
             ac.SV_fanModel : "HighPerformance",
             ac.SV_fanMode : ac.SINGLE,
@@ -9243,7 +9245,7 @@ ARRAY_21X21 = {
         # Row 7 (Fans 147-167)
         {
             ac.SV_name : "Row_07",
-            ac.SV_mac : "None",
+            ac.SV_mac : "00:80:e1:4c:00:30",
             ac.SV_index : -1,
             ac.SV_fanModel : "HighPerformance",
             ac.SV_fanMode : ac.SINGLE,
@@ -9269,7 +9271,7 @@ ARRAY_21X21 = {
         # Row 8 (Fans 168-188)
         {
             ac.SV_name : "Row_08",
-            ac.SV_mac : "None",
+            ac.SV_mac : "00:80:e1:50:00:27",
             ac.SV_index : -1,
             ac.SV_fanModel : "HighPerformance",
             ac.SV_fanMode : ac.SINGLE,
@@ -9295,7 +9297,7 @@ ARRAY_21X21 = {
         # Row 9 (Fans 189-209)
         {
             ac.SV_name : "Row_09",
-            ac.SV_mac : "None",
+            ac.SV_mac : "00:80:e1:35:00:3c",
             ac.SV_index : -1,
             ac.SV_fanModel : "HighPerformance",
             ac.SV_fanMode : ac.SINGLE,
@@ -9321,7 +9323,7 @@ ARRAY_21X21 = {
         # Row 10 (Fans 210-230)
         {
             ac.SV_name : "Row_10",
-            ac.SV_mac : "None",
+            ac.SV_mac : "00:80:e1:3c:00:18",
             ac.SV_index : -1,
             ac.SV_fanModel : "HighPerformance",
             ac.SV_fanMode : ac.SINGLE,
@@ -9347,7 +9349,7 @@ ARRAY_21X21 = {
         # Row 11 (Fans 231-251)
         {
             ac.SV_name : "Row_11",
-            ac.SV_mac : "None",
+            ac.SV_mac : "00:80:e1:3c:00:1a",
             ac.SV_index : -1,
             ac.SV_fanModel : "HighPerformance",
             ac.SV_fanMode : ac.SINGLE,
@@ -9373,7 +9375,7 @@ ARRAY_21X21 = {
         # Row 12 (Fans 252-272)
         {
             ac.SV_name : "Row_12",
-            ac.SV_mac : "None",
+            ac.SV_mac : "00:80:e1:23:00:1f",
             ac.SV_index : -1,
             ac.SV_fanModel : "HighPerformance",
             ac.SV_fanMode : ac.SINGLE,
@@ -9399,7 +9401,7 @@ ARRAY_21X21 = {
         # Row 13 (Fans 273-293)
         {
             ac.SV_name : "Row_13",
-            ac.SV_mac : "None",
+            ac.SV_mac : "00:80:e1:42:00:1a",
             ac.SV_index : -1,
             ac.SV_fanModel : "HighPerformance",
             ac.SV_fanMode : ac.SINGLE,
@@ -9425,7 +9427,7 @@ ARRAY_21X21 = {
         # Row 14 (Fans 294-314)
         {
             ac.SV_name : "Row_14",
-            ac.SV_mac : "None",
+            ac.SV_mac : "00:80:e1:51:00:29",
             ac.SV_index : -1,
             ac.SV_fanModel : "HighPerformance",
             ac.SV_fanMode : ac.SINGLE,
@@ -9451,7 +9453,7 @@ ARRAY_21X21 = {
         # Row 15 (Fans 315-335)
         {
             ac.SV_name : "Row_15",
-            ac.SV_mac : "None",
+            ac.SV_mac : "00:80:e1:49:00:2e",
             ac.SV_index : -1,
             ac.SV_fanModel : "HighPerformance",
             ac.SV_fanMode : ac.SINGLE,
@@ -9477,7 +9479,7 @@ ARRAY_21X21 = {
         # Row 16 (Fans 336-356)
         {
             ac.SV_name : "Row_16",
-            ac.SV_mac : "None",
+            ac.SV_mac : "00:80:e1:2f:00:48",
             ac.SV_index : -1,
             ac.SV_fanModel : "HighPerformance",
             ac.SV_fanMode : ac.SINGLE,
@@ -9503,7 +9505,7 @@ ARRAY_21X21 = {
         # Row 17 (Fans 357-377)
         {
             ac.SV_name : "Row_17",
-            ac.SV_mac : "None",
+            ac.SV_mac : "00:80:e1:39:00:43",
             ac.SV_index : -1,
             ac.SV_fanModel : "HighPerformance",
             ac.SV_fanMode : ac.SINGLE,
@@ -9529,7 +9531,7 @@ ARRAY_21X21 = {
         # Row 18 (Fans 378-398)
         {
             ac.SV_name : "Row_18",
-            ac.SV_mac : "None",
+            ac.SV_mac : "00:80:e1:4e:00:28",
             ac.SV_index : -1,
             ac.SV_fanModel : "HighPerformance",
             ac.SV_fanMode : ac.SINGLE,
@@ -9555,7 +9557,7 @@ ARRAY_21X21 = {
         # Row 19 (Fans 399-419)
         {
             ac.SV_name : "Row_19",
-            ac.SV_mac : "None",
+            ac.SV_mac : "00:80:e1:27:00:29",
             ac.SV_index : -1,
             ac.SV_fanModel : "HighPerformance",
             ac.SV_fanMode : ac.SINGLE,
@@ -9581,7 +9583,7 @@ ARRAY_21X21 = {
         # Row 20 (Fans 420-440)
         {
             ac.SV_name : "Row_20",
-            ac.SV_mac : "None",
+            ac.SV_mac : "00:80:e1:49:00:43",
             ac.SV_index : -1,
             ac.SV_fanModel : "HighPerformance",
             ac.SV_fanMode : ac.SINGLE,

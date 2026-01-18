@@ -372,7 +372,7 @@ class FCCommunicator(pt.PrintClient):
 
             # Bind socket to "nothing" (Broadcast on all interfaces and let OS
             # assign port number):
-            self.listenerSocket.bind(("", 0))
+            self.listenerSocket.bind((self.defaultIPAddress, 0))
 
             self.printr("\tlistenerSocket initialized on " + \
                 str(self.listenerSocket.getsockname()))
@@ -463,7 +463,7 @@ class FCCommunicator(pt.PrintClient):
             else:
                 TCPServerType = socketserver.ThreadingTCPServer
             self.httpd = TCPServerType(
-                ("", 0),
+                (self.defaultIPAddress, 0),
                 self.flashHTTPHandler
             )
 
@@ -1284,7 +1284,7 @@ class FCCommunicator(pt.PrintClient):
             misoS.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
             # 使用稳定性优化器设置超时
             self.stability_optimizer.optimize_socket_timeout(misoS, "data")
-            misoS.bind(('', 0))
+            misoS.bind((self.defaultIPAddress, 0))
 
             # MOSI:
             mosiS = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -1292,7 +1292,7 @@ class FCCommunicator(pt.PrintClient):
             mosiS.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
             # 使用稳定性优化器设置超时
             self.stability_optimizer.optimize_socket_timeout(mosiS, "heartbeat")
-            mosiS.bind(('', 0))
+            mosiS.bind((self.defaultIPAddress, 0))
 
             # Assign sockets:
             slave.setSockets(newMISOS = misoS, newMOSIS = mosiS)
@@ -1419,7 +1419,7 @@ class FCCommunicator(pt.PrintClient):
                             misoS.setsockopt(
                                 socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
                             misoS.settimeout(self.periodS*2)
-                            misoS.bind(('', 0))
+                            misoS.bind((self.defaultIPAddress, 0))
 
                             # MOSI:
                             slave._mosiSocket().close()
@@ -1431,7 +1431,7 @@ class FCCommunicator(pt.PrintClient):
                             mosiS.setsockopt(
                                 socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
                             mosiS.settimeout(self.periodS)
-                            mosiS.bind(('', 0))
+                            mosiS.bind((self.defaultIPAddress, 0))
 
                             # Assign sockets:
                             slave.setSockets(newMISOS = misoS, newMOSIS = mosiS)
@@ -1967,7 +1967,11 @@ class FCCommunicator(pt.PrintClient):
             # debug_monitor.record_error("socket_timeout", f"slave_{slave.getIndex()}_receive_timeout")
             
             # 使用错误恢复机制
-            context = {'slave_index': slave.getIndex(), 'operation': 'receive'}
+            context = {
+                'slave_index': slave.getIndex(), 
+                'operation': 'receive',
+                'socket': slave._misoSocket()
+            }
             error_recovery_manager.handle_error("socket_timeout", Exception("Socket timeout in receive"), context)
             
             self.performance_monitor.end_timing('message_receive_time')
