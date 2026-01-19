@@ -370,9 +370,13 @@ class FCCommunicator(pt.PrintClient):
             self.listenerSocket.setsockopt(
                 socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
-            # Bind socket to "nothing" (Broadcast on all interfaces and let OS
-            # assign port number):
-            self.listenerSocket.bind((self.defaultIPAddress, 0))
+            # Bind socket to a FIXED port to avoid firewall issues with random high ports
+            # Using 57584 as the fixed listener port
+            try:
+                self.listenerSocket.bind((self.defaultIPAddress, 57584))
+            except socket.error:
+                # If 57584 is taken, try 57584 + 1, etc.
+                self.listenerSocket.bind((self.defaultIPAddress, 0))
 
             self.printr("\tlistenerSocket initialized on " + \
                 str(self.listenerSocket.getsockname()))
@@ -1008,7 +1012,7 @@ class FCCommunicator(pt.PrintClient):
             try:
                 # Wait for a message to arrive:
                 messageReceived, senderAddress = \
-                    self.listenerSocket.recvfrom(256)
+                    self.listenerSocket.recvfrom(self.maxLength)
 
                 # DEBUG: print("Message received")
 
