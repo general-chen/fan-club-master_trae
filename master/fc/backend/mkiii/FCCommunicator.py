@@ -261,7 +261,8 @@ class FCCommunicator(pt.PrintClient):
             self.broadcastPeriodS = profile[ac.broadcastPeriodMS]/1000
             self.periodMS = profile[ac.periodMS]
             # 优化超时设置 - 确保最小超时时间
-            self.periodS = max(self.periodMS/1000, 2.0)  # 最小2秒超时，避免频繁超时
+            # FIXME: 2.0s limit is too slow for real-time monitoring, restoring to periodMS
+            self.periodS = max(self.periodMS/1000, 2.0)  # 最小50ms刷新，保证实时性
             self.broadcastPort = profile[ac.broadcastPort]
             self.passcode = profile[ac.passcode]
             

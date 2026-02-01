@@ -30,6 +30,8 @@
 import time as tm
 import tkinter as tk
 import tkinter.ttk as ttk
+import sys
+import os
 
 from fc.frontend.gui import guiutils as gus
 from fc.frontend.gui.widgets import network as ntw, control as ctr, \
@@ -147,10 +149,91 @@ class Base(ttk.Frame, ResponsiveMixin):
         
         # Set window icon
         try:
-            self.icon = tk.PhotoImage(data=icn.ICON)
-            self.winfo_toplevel().iconphoto(True, self.icon)
+            # Robust icon path finding
+            current_script_dir = os.path.dirname(os.path.abspath(__file__))
+            # base.py is in fc/frontend/gui/widgets/ -> 4 levels up to master
+            project_root_from_script = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(current_script_dir))))
+            
+            cwd = os.getcwd()
+            
+            # List of potential directories to search for resources/icons
+            search_dirs = [
+                os.path.join(project_root_from_script, "resources", "icons"),     # Relative to script (master/resources/icons)
+                os.path.join(cwd, "resources", "icons"),                          # Relative to CWD (if CWD is master)
+                os.path.join(cwd, "master", "resources", "icons"),                # Relative to CWD (if CWD is repo root)
+                os.path.join(cwd, "..", "resources", "icons")                     # Relative to CWD (backup)
+            ]
+            
+            png_path = None
+            ico_path = None
+            
+            for d in search_dirs:
+                if os.path.exists(d):
+                    p = os.path.join(d, "fan_icon.png")
+                    i = os.path.join(d, "fan_icon.ico")
+                    if os.path.exists(p):
+                        png_path = p
+                    if os.path.exists(i):
+                        ico_path = i
+                    if png_path or ico_path:
+                        break
+            
+            icon_set = False
+            
+            # 1. Try setting PNG icon (Supported by most OSs for window icon)
+            if png_path and os.path.exists(png_path):
+                try:
+                    self.icon = tk.PhotoImage(file=png_path)
+                    # Set icon for master (root) and this frame's toplevel
+                    self.master.iconphoto(True, self.icon)
+                    self.winfo_toplevel().iconphoto(True, self.icon)
+                    
+                    # Also try wm_iconphoto which is the direct window manager command
+                    self.master.wm_iconphoto(True, self.icon)
+                    self.winfo_toplevel().wm_iconphoto(True, self.icon)
+                    
+                    icon_set = True
+                    # print(f"Loaded custom PNG icon from {png_path}")
+                except Exception as e:
+                    self.printd(f"Error loading PNG icon: {e}")
+
+            # 2. Try setting ICO icon (Windows specific, better for taskbar/shortcuts)
+            platform_name = us.platform()
+            
+            if ico_path and os.path.exists(ico_path) and platform_name == us.WINDOWS:
+                try:
+                    # Fix for Windows Taskbar Icon (AppUserModelID)
+                    import ctypes
+                    # Use a unique ID for this specific version/instance
+                    myappid = f'westlake.fanclub.master.v4.{os.getpid()}' 
+                    ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
+                except Exception as e:
+                    print(f"Could not set AppUserModelID: {e}")
+
+                try:
+                    # Direct wm_iconbitmap call on root window
+                    self.master.wm_iconbitmap(ico_path)
+                    self.winfo_toplevel().wm_iconbitmap(ico_path)
+                    
+                    icon_set = True
+                    # print(f"Loaded custom ICO icon from {ico_path}")
+                except Exception as e:
+                    self.printd(f"Error loading ICO icon: {e}")
+
+            # 3. Fallback to embedded icon if no custom icon was set
+            if not icon_set:
+                self.icon = tk.PhotoImage(data=icn.ICON)
+                self.master.iconphoto(True, self.icon)
+                print("Loaded embedded fallback icon (custom icons not found or failed)")
+
         except Exception as e:
             self.printd(f"Could not set window icon: {e}")
+            # Ultimate fallback
+            try:
+                self.icon = tk.PhotoImage(data=icn.ICON)
+                self.winfo_toplevel().iconphoto(True, self.icon)
+            except:
+                pass
 
         """
         self.winfo_toplevel().geometry("{}x{}".format(
